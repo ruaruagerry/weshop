@@ -3,11 +3,12 @@ package controllers
 import (
 	"encoding/json"
 
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
 	"weshopserver/models"
 	"weshopserver/services"
 	"weshopserver/utils"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/orm"
 )
 
 type AuthController struct {
@@ -20,7 +21,6 @@ type AuthLoginBody struct {
 }
 
 func (this *AuthController) Auth_LoginByWeixin() {
-
 	var alb AuthLoginBody
 	body := this.Ctx.Input.RequestBody
 
@@ -70,5 +70,4 @@ func (this *AuthController) Auth_LoginByWeixin() {
 
 	utils.ReturnHTTPSuccess(&this.Controller, rtnInfo)
 	this.ServeJSON()
-
 }

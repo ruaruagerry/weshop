@@ -1,10 +1,11 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
 	"weshopserver/models"
 	"weshopserver/utils"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/orm"
 )
 
 type IndexController struct {
