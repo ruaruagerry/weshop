@@ -1,6 +1,9 @@
 package models
 
 import (
+	"fmt"
+
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -431,9 +434,17 @@ type NideshopUserLevel struct {
 // }
 
 func init() {
+	dbaddr := beego.AppConfig.String("mysql::address")
+	dbaccount := beego.AppConfig.String("mysql::account")
+	dbpassword := beego.AppConfig.String("mysql::password")
+	dbname := beego.AppConfig.String("mysql::database")
 
+	dbmsg := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4", dbaccount, dbpassword, dbaddr, dbname)
 	// set default database
-	orm.RegisterDataBase("default", "mysql", "root:123@tcp(127.0.0.1:3306)/nideshop?charset=utf8mb4", 30)
+	err := orm.RegisterDataBase("default", "mysql", dbmsg, 30)
+	if err != nil {
+		panic(err)
+	}
 
 	// register model
 	orm.RegisterModel(new(NideshopAd))
@@ -485,5 +496,4 @@ func init() {
 	orm.RegisterModel(new(NideshopUser))
 	orm.RegisterModel(new(NideshopUserCoupon))
 	orm.RegisterModel(new(NideshopUserLevel))
-
 }
