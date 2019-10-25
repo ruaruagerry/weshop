@@ -65,37 +65,39 @@ func indexHandle(c *server.StupidContext) {
 
 	sort.Stable(navid(navlist))
 
-	// 获取当前导航类型
-	navid := fmt.Sprintf("%d", navlist[navindex].ID)
-
-	// 获取当前导航物品
-	conn.Send("MULTI")
-	conn.Send("HGETALL", rconst.HashCatalogInfoPrefix+navid)
-	redisMDArray, err = redis.Values(conn.Do("EXEC"))
-	if err != nil {
-		httpRsp.Result = proto.Int32(int32(gconst.ErrRedis))
-		httpRsp.Msg = proto.String("统一获取缓存操作失败")
-		log.Errorf("code:%d msg:%s redisMDArray Values err, err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
-		return
-	}
-
-	catagorybytes, _ := redis.ByteSlices(redisMDArray[0], nil)
-
 	catagorylist := []*rconst.Catagory{}
-	for _, v := range catagorybytes {
-		tmp := &rconst.Catagory{}
-		err := json.Unmarshal(v, tmp)
+	if len(navlist) != 0 {
+		// 获取当前导航类型
+		navid := fmt.Sprintf("%d", navlist[navindex].ID)
+
+		// 获取当前导航物品
+		conn.Send("MULTI")
+		conn.Send("HGETALL", rconst.HashCatalogInfoPrefix+navid)
+		redisMDArray, err = redis.Values(conn.Do("EXEC"))
 		if err != nil {
-			httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
-			httpRsp.Msg = proto.String("导航页签unmarshal解析失败")
-			log.Errorf("code:%d msg:%s navbyte unmarshal err, err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
+			httpRsp.Result = proto.Int32(int32(gconst.ErrRedis))
+			httpRsp.Msg = proto.String("统一获取缓存操作失败")
+			log.Errorf("code:%d msg:%s redisMDArray Values err, err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
 			return
 		}
 
-		catagorylist = append(catagorylist, tmp)
-	}
+		catagorybytes, _ := redis.ByteSlices(redisMDArray[0], nil)
 
-	sort.Stable(catagoryid(catagorylist))
+		for _, v := range catagorybytes {
+			tmp := &rconst.Catagory{}
+			err := json.Unmarshal(v, tmp)
+			if err != nil {
+				httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
+				httpRsp.Msg = proto.String("导航页签unmarshal解析失败")
+				log.Errorf("code:%d msg:%s navbyte unmarshal err, err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
+				return
+			}
+
+			catagorylist = append(catagorylist, tmp)
+		}
+
+		sort.Stable(catagoryid(catagorylist))
+	}
 
 	// rsp
 	rsp := &indexRsp{

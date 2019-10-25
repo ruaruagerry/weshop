@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -101,7 +102,7 @@ func (ctx *StupidContext) WriteJSONRsp(msg *pb.HTTPResponse) {
 		}
 	}
 
-	bytes, err := proto.Marshal(msg)
+	bytes, err := json.Marshal(msg)
 	if err != nil {
 		ctx.Log.Panic("WriteRsp panic:", err)
 	}

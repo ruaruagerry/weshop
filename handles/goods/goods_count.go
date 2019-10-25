@@ -21,9 +21,9 @@ func countHandle(c *server.StupidContext) {
 	httpRsp := pb.HTTPResponse{
 		Result: proto.Int32(int32(gconst.UnknownError)),
 	}
-	defer c.WriteRsp(&httpRsp)
+	defer c.WriteJSONRsp(&httpRsp)
 
-	log.Info("helloHandle enter")
+	log.Info("countHandle enter")
 
 	conn := c.RedisConn
 
@@ -73,7 +73,7 @@ func countHandle(c *server.StupidContext) {
 	httpRsp.Result = proto.Int32(int32(gconst.Success))
 	httpRsp.Data = data
 
-	log.Info("helloHandle rsp, rsp:", string(data))
+	log.Info("countHandle rsp, rsp:", string(data))
 
 	return
 }
