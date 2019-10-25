@@ -10,6 +10,7 @@ require (
 	github.com/go-xorm/xorm v0.7.9
 	github.com/gogo/protobuf v1.2.0
 	github.com/golang/protobuf v1.3.2
+	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/lisijie/wordfilter v0.0.0-20131226032543-b532333baf97

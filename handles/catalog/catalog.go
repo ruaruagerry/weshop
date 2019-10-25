@@ -1,4 +1,4 @@
-package catagory
+package catalog
 
 import (
 	"weshop/rconst"

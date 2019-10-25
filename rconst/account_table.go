@@ -1,4 +1,3 @@
-// Package rconst 定义所有用到的redis keys/fields
 package rconst
 
 const (

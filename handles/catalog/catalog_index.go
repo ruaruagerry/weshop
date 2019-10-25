@@ -1,4 +1,4 @@
-package catagory
+package catalog
 
 import (
 	"encoding/json"
@@ -33,8 +33,8 @@ func indexHandle(c *server.StupidContext) {
 
 	// redis multi get
 	conn.Send("MULTI")
-	conn.Send("HGETALL", rconst.HashCatagoryNav)
-	conn.Send("HGET", rconst.HashCatagoryNavIndex, playerid)
+	conn.Send("HGETALL", rconst.HashCatalogNav)
+	conn.Send("HGET", rconst.HashCatalogNavIndex, playerid)
 	redisMDArray, err := redis.Values(conn.Do("EXEC"))
 	if err != nil {
 		httpRsp.Result = proto.Int32(int32(gconst.ErrRedis))
@@ -70,7 +70,7 @@ func indexHandle(c *server.StupidContext) {
 
 	// 获取当前导航物品
 	conn.Send("MULTI")
-	conn.Send("HGETALL", rconst.HashCatagoryInfoPrefix+navid)
+	conn.Send("HGETALL", rconst.HashCatalogInfoPrefix+navid)
 	redisMDArray, err = redis.Values(conn.Do("EXEC"))
 	if err != nil {
 		httpRsp.Result = proto.Int32(int32(gconst.ErrRedis))

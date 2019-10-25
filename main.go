@@ -9,18 +9,19 @@ package main
 import (
 	"flag"
 	"fmt"
-	"weshop/gamecfg"
-	"weshop/gfunc"
-	"weshop/server"
-	"weshop/servercfg"
 	"os"
 	"runtime"
 	"runtime/pprof"
 	"time"
+	"weshop/gamecfg"
+	"weshop/gfunc"
+	"weshop/server"
+	"weshop/servercfg"
 
 	_ "net/http/pprof"
 
-	_ "weshop/handles/catagory"
+	_ "weshop/handles/catalog"
+	_ "weshop/handles/goods"
 
 	log "github.com/sirupsen/logrus"
 )

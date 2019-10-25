@@ -1,4 +1,4 @@
-package catagory
+package catalog
 
 import (
 	"encoding/json"
@@ -45,7 +45,7 @@ func currentHandle(c *server.StupidContext) {
 
 	// redis multi get
 	conn.Send("MULTI")
-	conn.Send("HGETALL", rconst.HashCatagoryInfoPrefix+idstr)
+	conn.Send("HGETALL", rconst.HashCatalogInfoPrefix+idstr)
 	redisMDArray, err := redis.Values(conn.Do("EXEC"))
 	if err != nil {
 		httpRsp.Result = proto.Int32(int32(gconst.ErrRedis))
