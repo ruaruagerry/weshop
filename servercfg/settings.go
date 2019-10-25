@@ -43,21 +43,9 @@ var (
 	MQAccount  = "guest"
 	MQPassword = "guest"
 
-	CenterServer   = ""
-	AuthServer     = ""
-	RechargeServer = ""
-
-	RoomTypeName string
-
 	ForTestOnly = false
 
-	PayTestOnly = false
-
 	SensitiveWordFile = ""
-
-	SharePath = ""
-
-	Channel = ""
 )
 
 var (
@@ -97,15 +85,9 @@ func ParseConfigFile(filepath string) bool {
 		MQIP              string       `json:"mqIP"`
 		MQAccount         string       `json:"mqAccount"`
 		MQPassword        string       `json:"mqPassword"`
-		CenterServer      string       `json:"center_server"`
-		AuthServer        string       `json:"auth_server"`
-		RechargeServer    string       `json:"recharge_server"`
 		GameCfgsDir       string       `json:"gameCfgsDir"`
 		ForTestOnly       bool         `json:"forTestOnly"`
-		PayTestOnly       bool         `json:"payTestOnly"`
 		SensitiveWordFile string       `json:"SensitiveWordFile"`
-		SharePath         string       `json:"SharePath"`
-		Channel           string       `json:"channel"`
 	}
 
 	loadedCfgFilePath = filepath
@@ -170,21 +152,6 @@ func ParseConfigFile(filepath string) bool {
 		MQPassword = params.MQPassword
 	}
 
-	if params.CenterServer != "" {
-		CenterServer = params.CenterServer
-	}
-
-	if params.AuthServer != "" {
-		AuthServer = params.AuthServer
-	}
-	if params.RechargeServer != "" {
-		RechargeServer = params.RechargeServer
-	}
-
-	if params.Channel != "" {
-		Channel = params.Channel
-	}
-
 	DbIP = params.DbGoddess.DbIP
 	DbUser = params.DbGoddess.DbUser
 	DbPassword = params.DbGoddess.DbPassword
@@ -197,14 +164,9 @@ func ParseConfigFile(filepath string) bool {
 
 	// 是否测试用途
 	ForTestOnly = params.ForTestOnly
-	PayTestOnly = params.PayTestOnly
 
 	if params.SensitiveWordFile != "" {
 		SensitiveWordFile = params.SensitiveWordFile
-	}
-
-	if params.SharePath != "" {
-		SharePath = params.SharePath
 	}
 
 	if ServerID == 0 {
@@ -212,27 +174,8 @@ func ParseConfigFile(filepath string) bool {
 		return false
 	}
 
-	if Channel == "" {
-		log.Println("channel must not be empty!")
-		return false
-	}
-
 	if RedisServer == "" {
 		log.Println("redis server id  must not be empty!")
-		return false
-	}
-
-	if AuthServer == "" {
-		log.Println("auth server must not be empty!")
-		return false
-	}
-	if RechargeServer == "" {
-		log.Println("recharege server must not be empty!")
-		return false
-	}
-
-	if CenterServer == "" {
-		log.Println("center server must not be empty!")
 		return false
 	}
 
