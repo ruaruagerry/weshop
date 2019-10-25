@@ -1,11 +1,11 @@
 package server
 
 import (
-	"weshop/gconst"
-	"weshop/pb"
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"weshop/gconst"
+	"weshop/pb"
 
 	"github.com/golang/protobuf/proto"
 
@@ -77,6 +77,23 @@ func newReqContext(r *http.Request, requiredUserID bool) (*StupidContext, int) {
 
 // WriteRsp send protobuf messsage to peer
 func (ctx *StupidContext) WriteRsp(msg *pb.HTTPResponse) {
+	if msg.GetResult() != int32(gconst.Success) {
+		if msg.GetMsg() == "" {
+			result := gconst.Error(msg.GetResult())
+			msg.Msg = proto.String(result.String())
+		}
+	}
+
+	bytes, err := proto.Marshal(msg)
+	if err != nil {
+		ctx.Log.Panic("WriteRsp panic:", err)
+	}
+
+	ctx.W.Write(bytes)
+}
+
+// WriteJSONRsp send protobuf messsage to peer
+func (ctx *StupidContext) WriteJSONRsp(msg *pb.HTTPResponse) {
 	if msg.GetResult() != int32(gconst.Success) {
 		if msg.GetMsg() == "" {
 			result := gconst.Error(msg.GetResult())

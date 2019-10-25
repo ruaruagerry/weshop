@@ -20,6 +20,8 @@ import (
 
 	_ "net/http/pprof"
 
+	_ "weshop/handles/catagory"
+
 	log "github.com/sirupsen/logrus"
 )
 
