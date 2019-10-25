@@ -1,2 +1,0 @@
-*.go linguist-language=go
-*.sql linguist-language=go
