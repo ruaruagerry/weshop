@@ -54,12 +54,12 @@ func currentHandle(c *server.StupidContext) {
 		return
 	}
 
-	catagorybytes, _ := redis.ByteSlices(redisMDArray[0], nil)
+	catagorybytes, _ := redis.StringMap(redisMDArray[0], nil)
 
 	catagorylist := []*rconst.Catagory{}
 	for _, v := range catagorybytes {
 		tmp := &rconst.Catagory{}
-		err := json.Unmarshal(v, tmp)
+		err := json.Unmarshal([]byte(v), tmp)
 		if err != nil {
 			httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
 			httpRsp.Msg = proto.String("导航页签unmarshal解析失败")

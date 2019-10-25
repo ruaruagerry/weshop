@@ -10,7 +10,7 @@ type Nav struct {
 // Catagory 商品
 type Catagory struct {
 	ID         int32  `json:"id"`         // 商品分类ID
-	CatagoryID int32  `json:"catagoryid"` // 商品id
+	CatagoryID string `json:"catagoryid"` // 商品id
 	Name       string `json:"name"`       // 商品名称
 	URL        string `json:"url"`        // 商品图片
 }

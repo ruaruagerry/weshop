@@ -44,7 +44,7 @@ func indexHandle(c *server.StupidContext) {
 	}
 
 	// 导航页签
-	navbytes, _ := redis.ByteSlices(redisMDArray[0], nil)
+	navbytes, _ := redis.StringMap(redisMDArray[0], nil)
 	// 玩家当前导航索引
 	navindex, _ := redis.Int(redisMDArray[1], nil)
 
@@ -52,7 +52,7 @@ func indexHandle(c *server.StupidContext) {
 	navlist := []*rconst.Nav{}
 	for _, v := range navbytes {
 		tmp := &rconst.Nav{}
-		err := json.Unmarshal(v, tmp)
+		err := json.Unmarshal([]byte(v), tmp)
 		if err != nil {
 			httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
 			httpRsp.Msg = proto.String("导航页签unmarshal解析失败")
@@ -81,11 +81,11 @@ func indexHandle(c *server.StupidContext) {
 			return
 		}
 
-		catagorybytes, _ := redis.ByteSlices(redisMDArray[0], nil)
+		catagorybytes, _ := redis.StringMap(redisMDArray[0], nil)
 
 		for _, v := range catagorybytes {
 			tmp := &rconst.Catagory{}
-			err := json.Unmarshal(v, tmp)
+			err := json.Unmarshal([]byte(v), tmp)
 			if err != nil {
 				httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
 				httpRsp.Msg = proto.String("导航页签unmarshal解析失败")
