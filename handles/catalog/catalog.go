@@ -30,7 +30,7 @@ func (a catagoryid) Len() int {
 }
 
 func (a catagoryid) Less(i, j int) bool {
-	if a[i].ID < a[j].ID {
+	if a[i].CatagoryID < a[j].CatagoryID {
 		return true
 	}
 	return false

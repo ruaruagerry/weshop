@@ -43,7 +43,7 @@ func countHandle(c *server.StupidContext) {
 	// do something
 	conn.Send("MULTI")
 	for _, v := range navids {
-		conn.Send("HLEN", rconst.HashCatalogInfoPrefix+v)
+		conn.Send("HLEN", rconst.HashCatalogCategoryPrefix+v)
 	}
 	redisMDArray, err = redis.Values(conn.Do("EXEC"))
 	if err != nil {

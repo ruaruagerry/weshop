@@ -8,17 +8,20 @@ import (
 	"github.com/golang/protobuf/proto"
 )
 
-func categoryHandle(c *server.StupidContext) {
-	log := c.Log.WithField("func", "goods.categoryHandle")
+type listReq struct {
+	CatagoryID string `json:"catagoryid"`
+}
+
+type listRsp struct {
+}
+
+func listHandle(c *server.StupidContext) {
+	// log := c.Log.WithField("func", "goods.listHandle")
 
 	httpRsp := pb.HTTPResponse{
 		Result: proto.Int32(int32(gconst.UnknownError)),
 	}
 	defer c.WriteJSONRsp(&httpRsp)
-
-	id := c.Query.Get("id")
-
-	log.Info("categoryHandle enter, id:", id)
 
 	// conn := c.RedisConn
 	// playerid := c.UserID

@@ -16,6 +16,7 @@ import (
 type indexRsp struct {
 	NavList      []*rconst.Nav      `json:"navlist"`
 	CatagoryList []*rconst.Catagory `json:"catagorylist"`
+	CurNavIndex  int                `json:"curnavindex"`
 }
 
 func indexHandle(c *server.StupidContext) {
@@ -72,7 +73,7 @@ func indexHandle(c *server.StupidContext) {
 
 		// 获取当前导航物品
 		conn.Send("MULTI")
-		conn.Send("HGETALL", rconst.HashCatalogInfoPrefix+navid)
+		conn.Send("HGETALL", rconst.HashCatalogCategoryPrefix+navid)
 		redisMDArray, err = redis.Values(conn.Do("EXEC"))
 		if err != nil {
 			httpRsp.Result = proto.Int32(int32(gconst.ErrRedis))
@@ -103,6 +104,7 @@ func indexHandle(c *server.StupidContext) {
 	rsp := &indexRsp{
 		NavList:      navlist,
 		CatagoryList: catagorylist,
+		CurNavIndex:  navindex,
 	}
 	data, err := json.Marshal(rsp)
 	if err != nil {
