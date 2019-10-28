@@ -1,4 +1,4 @@
-package demo
+package goods
 
 import (
 	"weshop/gconst"
@@ -8,24 +8,17 @@ import (
 	"github.com/golang/protobuf/proto"
 )
 
-func helloHandle(c *server.StupidContext) {
-	log := c.Log.WithField("func", "demo.helloHandle")
+func categoryHandle(c *server.StupidContext) {
+	log := c.Log.WithField("func", "goods.categoryHandle")
 
 	httpRsp := pb.HTTPResponse{
 		Result: proto.Int32(int32(gconst.UnknownError)),
 	}
 	defer c.WriteJSONRsp(&httpRsp)
 
-	// // req
-	// req := &pb.HelloReq{}
-	// if err := proto.Unmarshal(c.Body, req); err != nil {
-	// 	httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
-	// 	httpRsp.Msg = proto.String("请求信息解析失败")
-	// 	log.Errorf("code:%d msg:请求信息解析失败 proto Unmarshal err:%s", httpRsp.GetResult(), err.Error())
-	// 	return
-	// }
+	id := c.Query.Get("id")
 
-	// log.Info("helloHandle enter, req:", req.String())
+	log.Info("categoryHandle enter, id:", id)
 
 	// conn := c.RedisConn
 	// playerid := c.UserID
