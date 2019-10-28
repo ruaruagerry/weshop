@@ -18,11 +18,11 @@ type currentReq struct {
 }
 
 type currentRsp struct {
-	CatagoryList []*rconst.Catagory `json:"catagorylist"`
+	CategoryList []*rconst.Category `json:"categorylist"`
 }
 
 func currentHandle(c *server.StupidContext) {
-	log := c.Log.WithField("func", "catagory.currentHandle")
+	log := c.Log.WithField("func", "catalog.currentHandle")
 
 	httpRsp := pb.HTTPResponse{
 		Result: proto.Int32(int32(gconst.UnknownError)),
@@ -54,11 +54,11 @@ func currentHandle(c *server.StupidContext) {
 		return
 	}
 
-	catagorybytes, _ := redis.StringMap(redisMDArray[0], nil)
+	categorybytes, _ := redis.StringMap(redisMDArray[0], nil)
 
-	catagorylist := []*rconst.Catagory{}
-	for _, v := range catagorybytes {
-		tmp := &rconst.Catagory{}
+	categorylist := []*rconst.Category{}
+	for _, v := range categorybytes {
+		tmp := &rconst.Category{}
 		err := json.Unmarshal([]byte(v), tmp)
 		if err != nil {
 			httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
@@ -67,14 +67,14 @@ func currentHandle(c *server.StupidContext) {
 			return
 		}
 
-		catagorylist = append(catagorylist, tmp)
+		categorylist = append(categorylist, tmp)
 	}
 
-	sort.Stable(catagoryid(catagorylist))
+	sort.Stable(categoryid(categorylist))
 
 	// rsp
 	rsp := &currentRsp{
-		CatagoryList: catagorylist,
+		CategoryList: categorylist,
 	}
 	data, err := json.Marshal(rsp)
 	if err != nil {

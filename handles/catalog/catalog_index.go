@@ -15,12 +15,12 @@ import (
 
 type indexRsp struct {
 	NavList      []*rconst.Nav      `json:"navlist"`
-	CatagoryList []*rconst.Catagory `json:"catagorylist"`
+	CategoryList []*rconst.Category `json:"categorylist"`
 	CurNavIndex  int                `json:"curnavindex"`
 }
 
 func indexHandle(c *server.StupidContext) {
-	log := c.Log.WithField("func", "catagory.indexHandle")
+	log := c.Log.WithField("func", "catalog.indexHandle")
 
 	httpRsp := pb.HTTPResponse{
 		Result: proto.Int32(int32(gconst.UnknownError)),
@@ -66,7 +66,7 @@ func indexHandle(c *server.StupidContext) {
 
 	sort.Stable(navid(navlist))
 
-	catagorylist := []*rconst.Catagory{}
+	categorylist := []*rconst.Category{}
 	if len(navlist) != 0 {
 		// 获取当前导航类型
 		navid := fmt.Sprintf("%d", navlist[navindex].ID)
@@ -82,10 +82,10 @@ func indexHandle(c *server.StupidContext) {
 			return
 		}
 
-		catagorybytes, _ := redis.StringMap(redisMDArray[0], nil)
+		categorybytes, _ := redis.StringMap(redisMDArray[0], nil)
 
-		for _, v := range catagorybytes {
-			tmp := &rconst.Catagory{}
+		for _, v := range categorybytes {
+			tmp := &rconst.Category{}
 			err := json.Unmarshal([]byte(v), tmp)
 			if err != nil {
 				httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
@@ -94,16 +94,16 @@ func indexHandle(c *server.StupidContext) {
 				return
 			}
 
-			catagorylist = append(catagorylist, tmp)
+			categorylist = append(categorylist, tmp)
 		}
 
-		sort.Stable(catagoryid(catagorylist))
+		sort.Stable(categoryid(categorylist))
 	}
 
 	// rsp
 	rsp := &indexRsp{
 		NavList:      navlist,
-		CatagoryList: catagorylist,
+		CategoryList: categorylist,
 		CurNavIndex:  navindex,
 	}
 	data, err := json.Marshal(rsp)

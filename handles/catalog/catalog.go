@@ -22,20 +22,20 @@ func (a navid) Swap(i, j int) {
 	a[i], a[j] = a[j], a[i]
 }
 
-// catagoryid 排序重载
-type catagoryid []*rconst.Catagory
+// categoryid 排序重载
+type categoryid []*rconst.Category
 
-func (a catagoryid) Len() int {
+func (a categoryid) Len() int {
 	return len(a)
 }
 
-func (a catagoryid) Less(i, j int) bool {
-	if a[i].CatagoryID < a[j].CatagoryID {
+func (a categoryid) Less(i, j int) bool {
+	if a[i].CategoryID < a[j].CategoryID {
 		return true
 	}
 	return false
 }
 
-func (a catagoryid) Swap(i, j int) {
+func (a categoryid) Swap(i, j int) {
 	a[i], a[j] = a[j], a[i]
 }
