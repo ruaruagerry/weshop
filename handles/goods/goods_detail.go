@@ -19,7 +19,7 @@ type detailRsp struct {
 	Gallery   []string                `json:"gallery"`
 	Attribute []*rconst.GoodAttribute `json:"attribute"`
 	Issue     []*rconst.GoodIssue     `json:"issue"`
-	Brand     rconst.GoodBrand        `json:"brand"`
+	Brand     *rconst.GoodBrand       `json:"brand"`
 }
 
 func detailHandle(c *server.StupidContext) {
