@@ -31,6 +31,8 @@ const (
 	ErrTokenFormat = Error(10)
 	// ErrTokenExpired token expired 11
 	ErrTokenExpired = Error(11)
+	// ErrCreateUUID 生成uuid失败
+	ErrCreateUUID = Error(12)
 )
 
 var errMsg = map[Error]string{
@@ -45,6 +47,7 @@ var errMsg = map[Error]string{
 	ErrTokenDecrypt: "token解析失败",
 	ErrTokenFormat:  "token格式错误",
 	ErrTokenExpired: "token已过期",
+	ErrCreateUUID:   "生成uuid失败",
 }
 
 // String 获得错误码描述信息
