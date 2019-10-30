@@ -27,6 +27,19 @@ type GoodBrand struct {
 	BrandName string `json:"brandname"`
 }
 
+// GoodSpecificationDetail 商品规格详情
+type GoodSpecificationDetail struct {
+	DetailID string `json:"detailid"`
+	Value    string `json:"value"`
+}
+
+// GoodSpecification 商品规格
+type GoodSpecification struct {
+	SpecificationID string                     `json:"specificationid"`
+	Name            string                     `json:"name"`
+	ValueList       []*GoodSpecificationDetail `json:"valuelist"`
+}
+
 const (
 	// HashGoodsInfoPrefix 商品列表+categoryid
 	HashGoodsInfoPrefix = "weshop:goods:info:"
@@ -39,4 +52,6 @@ const (
 	HashGoodsIssue = "weshop:goods:issue"
 	// HashGoodsBrand 商品牌子
 	HashGoodsBrand = "weshop:goods:brand"
+	// HashGoodsSpecification 商品规格
+	HashGoodsSpecification = "weshop:goods:specification"
 )

@@ -13,3 +13,5 @@ hset weshop:goods:gallery "hf1_1" "[\"https://timgsa.baidu.com/timg?image&qualit
 hset weshop:goods:attribute "hf1_1" "[{\"name\":\"参数1\", \"value\":\"值1\"},{\"name\":\"参数2\", \"value\":\"值2\"}]"
 hset weshop:goods:issue "hf1_1" "[{\"question\":\"问题1\", \"answer\":\"答案1\"},{\"question\":\"问题2\", \"answer\":\"答案2\"}]"
 hset weshop:goods:brand "hf1_1" "{\"brandid\":\"brandid_1\", \"brandname\":\"兰蔻\"}"
+hset weshop:goods:specification "hf1_1" "[{\"specificationid\":\"hf1_1_s_1\", \"name\":\"兰蔻规格1\", \"valuelist\":[{\"detailid\":\"hf1_1_s_1_d_1\", \"value\":\"规格value1\"},{\"detailid\":\"hf1_1_s_1_d_2\", \"value\":\"1规格value1\"}]}, {\"specificationid\":\"hf1_1_s_2\", \"name\":\"1兰蔻规格2\", \"valuelist\":[{\"detailid\":\"hf1_1_s_2_d_1\", \"value\":\"2规格value1\"},{\"detailid\":\"hf1_1_s_2_d_2\", \"value\":\"2规格value2\"}]}]"
+
