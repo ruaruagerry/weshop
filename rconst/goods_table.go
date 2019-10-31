@@ -41,9 +41,10 @@ type GoodSpecification struct {
 }
 
 const (
-	// HashGoodsInfoPrefix 商品列表+categoryid
-	HashGoodsInfoPrefix = "weshop:goods:info:"
-
+	// SetGoodsCategoryPrefix 商品列表+categoryid
+	SetGoodsCategoryPrefix = "weshop:goods:category:"
+	// HashGoodsInfo 商品信息
+	HashGoodsInfo = "wehshop:goods:info"
 	// HashGoodsGallery 商品展览图
 	HashGoodsGallery = "weshop:goods:gallery"
 	// HashGoodsAttribute 商品属性

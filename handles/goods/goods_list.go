@@ -44,25 +44,40 @@ func listHandle(c *server.StupidContext) {
 
 	// redis multi get
 	conn.Send("MULTI")
-	conn.Send("HGETALL", rconst.HashGoodsInfoPrefix+req.CategoryID)
+	conn.Send("SMEMBERS", rconst.SetGoodsCategoryPrefix+req.CategoryID)
 	redisMDArray, err := redis.Values(conn.Do("EXEC"))
 	if err != nil {
 		httpRsp.Result = proto.Int32(int32(gconst.ErrRedis))
 		httpRsp.Msg = proto.String("统一获取缓存操作失败")
-		log.Errorf("code:%d msg:统一获取缓存操作失败 redisMDArray Values err, err:%s", httpRsp.GetResult(), err.Error())
+		log.Errorf("code:%d msg:%s redisMDArray Values err, err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
 		return
 	}
 
-	goodbytes, _ := redis.StringMap(redisMDArray[0], nil)
+	goodids, _ := redis.Strings(redisMDArray[0], nil)
+	log.Info("goodids:", goodids)
 
-	// // do something
+	conn.Send("MULTI")
+	for _, v := range goodids {
+		conn.Send("HGET", rconst.HashGoodsInfo, v)
+	}
+	redisMDArray, err = redis.Values(conn.Do("EXEC"))
+	if err != nil {
+		httpRsp.Result = proto.Int32(int32(gconst.ErrRedis))
+		httpRsp.Msg = proto.String("统一获取缓存操作失败")
+		log.Errorf("code:%d msg:%s redisMDArray Values err, err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
+		return
+	}
+
+	// do something
 	goodslist := []*rconst.Good{}
-	for _, v := range goodbytes {
+	for i := range goodids {
+		goodbytes, _ := redis.Bytes(redisMDArray[i], nil)
+
 		tmp := &rconst.Good{}
-		err := json.Unmarshal([]byte(v), tmp)
+		err := json.Unmarshal(goodbytes, tmp)
 		if err != nil {
 			httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
-			httpRsp.Msg = proto.String("导航页签unmarshal解析失败")
+			httpRsp.Msg = proto.String("商品unmarshal解析失败")
 			log.Errorf("code:%d msg:%s goodbyte unmarshal err, err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
 			return
 		}
@@ -80,7 +95,7 @@ func listHandle(c *server.StupidContext) {
 	if err != nil {
 		httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
 		httpRsp.Msg = proto.String("返回信息marshal解析失败")
-		log.Errorf("code:%d msg:返回信息marshal解析失败 proto marshal err, err:%s", httpRsp.GetResult(), err.Error())
+		log.Errorf("code:%d msg:%s proto marshal err, err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
 		return
 	}
 	httpRsp.Result = proto.Int32(int32(gconst.Success))
