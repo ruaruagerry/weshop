@@ -110,7 +110,7 @@ func indexHandle(c *server.StupidContext) {
 	if err != nil {
 		httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
 		httpRsp.Msg = proto.String("返回信息marshal解析失败")
-		log.Errorf("code:%d msg:返回信息marshal解析失败 proto marshal err, err:%s", httpRsp.GetResult(), err.Error())
+		log.Errorf("code:%d msg:返回信息marshal解析失败 json marshal err, err:%s", httpRsp.GetResult(), err.Error())
 		return
 	}
 	httpRsp.Result = proto.Int32(int32(gconst.Success))

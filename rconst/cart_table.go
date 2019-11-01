@@ -13,6 +13,7 @@ type Cart struct {
 	GoodID        string               `json:"goodid"`
 	Num           int32                `json:"num"`
 	Specification []*CartSpecification `json:"specification"`
+	Checked       bool                 `json:"checked"`
 }
 
 const (

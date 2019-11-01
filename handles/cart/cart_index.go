@@ -19,11 +19,17 @@ type cartgood struct {
 	Num           int32  `json:"num"`
 	Price         int64  `json:"price"`
 	Specification string `json:"specification"`
+	Checked       bool   `json:"checked"`
+}
+
+type carttotal struct {
+	CheckedCount int32 `json:"checkedcount"`
+	CheckedPrice int64 `json:"checkedprice"`
 }
 
 type indexRsp struct {
 	Cartlist  []*cartgood `json:"cartlist"`
-	CartTotal int32       `json:"carttotal"`
+	CartTotal *carttotal  `json:"carttotal"`
 }
 
 func indexHandle(c *server.StupidContext) {
@@ -80,6 +86,8 @@ func indexHandle(c *server.StupidContext) {
 	}
 
 	cartlist := []*cartgood{}
+	checkedcount := int32(0)
+	checkedprice := int64(0)
 	for i, v := range carts {
 		goodbytes, _ := redis.Bytes(redisMDArray[i], nil)
 
@@ -97,6 +105,11 @@ func indexHandle(c *server.StupidContext) {
 			specslice = append(specslice, v1.Value)
 		}
 
+		if v.Checked {
+			checkedcount++
+			checkedprice += tmp.Price
+		}
+
 		tmprsp := &cartgood{
 			CartID:        v.CartID,
 			URL:           tmp.URL,
@@ -104,21 +117,26 @@ func indexHandle(c *server.StupidContext) {
 			Num:           v.Num,
 			Price:         tmp.Price,
 			Specification: strings.Join(specslice, ";"),
+			Checked:       v.Checked,
 		}
 
 		cartlist = append(cartlist, tmprsp)
 	}
 
 	// rsp
+	rspcarttotal := &carttotal{
+		CheckedCount: checkedcount,
+		CheckedPrice: checkedprice,
+	}
 	rsp := &indexRsp{
 		Cartlist:  cartlist,
-		CartTotal: int32(len(cartlist)),
+		CartTotal: rspcarttotal,
 	}
 	data, err := json.Marshal(rsp)
 	if err != nil {
 		httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
 		httpRsp.Msg = proto.String("返回信息marshal解析失败")
-		log.Errorf("code:%d msg:%s proto marshal err, err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
+		log.Errorf("code:%d msg:%s json marshal err, err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
 		return
 	}
 	httpRsp.Result = proto.Int32(int32(gconst.Success))
