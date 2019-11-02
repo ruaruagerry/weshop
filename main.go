@@ -23,6 +23,7 @@ import (
 	_ "weshop/handles/catalog"
 	_ "weshop/handles/cart"
 	_ "weshop/handles/goods"
+	_ "weshop/handles/shop"
 
 	log "github.com/sirupsen/logrus"
 )

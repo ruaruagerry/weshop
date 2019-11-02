@@ -8,4 +8,7 @@ func init() {
 	server.RegisterPostHandleNoUserID("/cart/add", addHandle)
 	server.RegisterGetHandleNoUserID("/cart/count", countHandle)
 	server.RegisterPostHandleNoUserID("/cart/checked", checkedHandle)
+	server.RegisterPostHandleNoUserID("/cart/checkedall", checkedallHandle)
+	server.RegisterPostHandleNoUserID("/cart/update", updateHandle)
+	server.RegisterPostHandleNoUserID("/cart/delete", deleteHandle)
 }

@@ -18,10 +18,10 @@ func helloHandle(c *server.StupidContext) {
 
 	// req
 	// req := &pb.HelloReq{}
-	// if err := proto.Unmarshal(c.Body, req); err != nil {
+	// if err := json.Unmarshal(c.Body, req); err != nil {
 	// 	httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
 	// 	httpRsp.Msg = proto.String("请求信息解析失败")
-	// 	log.Errorf("code:%d msg:%s proto Unmarshal err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
+	// 	log.Errorf("code:%d msg:%s json Unmarshal err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
 	// 	return
 	// }
 
@@ -54,11 +54,11 @@ func helloHandle(c *server.StupidContext) {
 
 	// // rsp
 	// rsp := &pb.HelloRsp{}
-	// data, err := proto.Marshal(rsp)
+	// data, err := json.Marshal(rsp)
 	// if err != nil {
 	// 	httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
 	// 	httpRsp.Msg = proto.String("返回信息marshal解析失败")
-	// 	log.Errorf("code:%d msg:%s proto marshal err, err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
+	// 	log.Errorf("code:%d msg:%s json marshal err, err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
 	// 	return
 	// }
 	httpRsp.Result = proto.Int32(int32(gconst.Success))
