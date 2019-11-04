@@ -25,7 +25,7 @@ func helloHandle(c *server.StupidContext) {
 	// 	return
 	// }
 
-	// log.Info("helloHandle enter, req:", req.String())
+	// log.Info("helloHandle enter, req:", string(c.Body))
 
 	// conn := c.RedisConn
 	// playerid := c.UserID
@@ -64,7 +64,7 @@ func helloHandle(c *server.StupidContext) {
 	httpRsp.Result = proto.Int32(int32(gconst.Success))
 	// httpRsp.Data = data
 
-	// log.Info("helloHandle rsp, rsp:", rsp.String())
+	// log.Info("helloHandle rsp, rsp:", string(data))
 
 	return
 }

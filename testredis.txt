@@ -19,3 +19,5 @@ hset weshop:goods:specification "hf1_1" "[{\"specificationid\":\"hf1_1_s_1\", \"
 
 
 hset weshop:shop:checkoutconfig "freightprice" 1
+hset weshop:shop:checkoutconfig "wxpayurl" http://47.106.147.185/wx.JPG
+hset weshop:shop:checkoutconfig "zfbpayurl" http://47.106.147.185/zfb.JPG

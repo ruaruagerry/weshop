@@ -29,6 +29,7 @@ type addRsp struct {
 	CartTotal int32 `json:"carttotal"`
 }
 
+// todo 加上订单最大数的限制
 func addHandle(c *server.StupidContext) {
 	log := c.Log.WithField("func", "cart.addHandle")
 

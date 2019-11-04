@@ -31,7 +31,7 @@ func checkoutHandle(c *server.StupidContext) {
 
 	// redis multi get
 	conn.Send("MULTI")
-	conn.Send("HGET", rconst.HashShopCheckoutConfig, rconst.FIeldShopFreightPrice)
+	conn.Send("HGET", rconst.HashShopCheckoutConfig, rconst.FieldShopFreightPrice)
 	conn.Send("HGET", rconst.HashShopUsedAddress, playerid)
 	redisMDArray, err := redis.Values(conn.Do("EXEC"))
 	if err != nil {

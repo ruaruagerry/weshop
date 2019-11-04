@@ -33,6 +33,10 @@ const (
 	ErrTokenExpired = Error(11)
 	// ErrCreateUUID 生成uuid失败
 	ErrCreateUUID = Error(12)
+
+	/* shop 1000-1099 */
+	// ErrShopNotFindAddress 未找到收货地址
+	ErrShopNotFindAddress = Error(1000)
 )
 
 var errMsg = map[Error]string{
