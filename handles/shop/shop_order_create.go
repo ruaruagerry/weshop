@@ -98,6 +98,7 @@ func orderCreateHandle(c *server.StupidContext) {
 		OrderID:    uuidorderid.String(),
 		AddressID:  req.AddressID,
 		CartIndexs: cartindexs,
+		Status:     rconst.TypeOrderStatusNotCharged,
 	}
 
 	// redis multi set

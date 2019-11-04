@@ -1,5 +1,16 @@
 package rconst
 
+const (
+	// TypeOrderStatusNotCharged 订单未付款
+	TypeOrderStatusNotCharged = 1
+	// TypeOrderStatusCharged 订单已付款
+	TypeOrderStatusCharged = 2
+	// TypeOrderStatusSend 订单已发送
+	TypeOrderStatusSend = 3
+	// TypeOrderStatusFinished 订单已完成
+	TypeOrderStatusFinished = 4
+)
+
 // ShopAddress 收货地址
 type ShopAddress struct {
 	AddressID string `json:"addressid"`
@@ -15,6 +26,7 @@ type ShopOrder struct {
 	OrderID    string  `json:"orderid"`
 	AddressID  string  `json:"addressid"`
 	CartIndexs []int32 `json:"cartindexs"`
+	Status     int32   `json:"status"`
 }
 
 const (

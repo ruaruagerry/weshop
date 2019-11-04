@@ -7,4 +7,5 @@ func init() {
 	server.RegisterPostHandleNoUserID("/shop/address/save", addressSaveHandle)
 	server.RegisterGetHandleNoUserID("/shop/address/list", addressListHandle)
 	server.RegisterPostHandleNoUserID("/shop/order/create", orderCreateHandle)
+	server.RegisterPostHandleNoUserID("/shop/order/list", orderListHandle)
 }
