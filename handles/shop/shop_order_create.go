@@ -2,6 +2,7 @@ package shop
 
 import (
 	"encoding/json"
+	"time"
 	"weshop/gconst"
 	"weshop/pb"
 	"weshop/rconst"
@@ -99,6 +100,7 @@ func orderCreateHandle(c *server.StupidContext) {
 		AddressID:  req.AddressID,
 		CartIndexs: cartindexs,
 		Status:     rconst.TypeOrderStatusNotCharged,
+		Time:       time.Now().Unix(),
 	}
 
 	// redis multi set

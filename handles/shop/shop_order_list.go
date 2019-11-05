@@ -11,14 +11,22 @@ import (
 	"github.com/golang/protobuf/proto"
 )
 
-type order struct {
-	OrderID  string         `json:"orderid"`
-	Status   int32          `json:"status"`
-	GoodList []*rconst.Good `json:"goodlist"`
+type listordergood struct {
+	GoodID string `json:"goodid"`
+	URL    string `json:"url"`
+	Name   string `json:"name"`
+	Num    int32  `json:"num"`
+}
+
+type listorder struct {
+	OrderID  string           `json:"orderid"`
+	Status   int32            `json:"status"`
+	GoodList []*listordergood `json:"goodlist"`
+	Price    int64            `json:"price"`
 }
 
 type orderListRsp struct {
-	OrderList []*order `json:"orderlist"`
+	OrderList []*listorder `json:"orderlist"`
 }
 
 func orderListHandle(c *server.StupidContext) {
@@ -37,6 +45,8 @@ func orderListHandle(c *server.StupidContext) {
 	// redis multi get
 	conn.Send("MULTI")
 	conn.Send("HGETALL", rconst.HashShopOrderPrefix+playerid)
+	conn.Send("ZRANGE", rconst.ZSetCartInfoPrefix+playerid, 0, -1)
+	conn.Send("HGET", rconst.HashShopCheckoutConfig, rconst.FieldShopFreightPrice)
 	redisMDArray, err := redis.Values(conn.Do("EXEC"))
 	if err != nil {
 		httpRsp.Result = proto.Int32(int32(gconst.ErrRedis))
@@ -46,6 +56,8 @@ func orderListHandle(c *server.StupidContext) {
 	}
 
 	ordermap, _ := redis.StringMap(redisMDArray[0], nil)
+	cartbytes, _ := redis.ByteSlices(redisMDArray[1], nil)
+	freightprice, _ := redis.Int64(redisMDArray[2], nil)
 
 	// do something
 	orders := []*rconst.ShopOrder{}
@@ -64,31 +76,25 @@ func orderListHandle(c *server.StupidContext) {
 
 	// find cart
 	cartindexs := []int32{}
+	cartindexmap := map[int32]bool{}
 	for _, v := range orders {
 		for _, v1 := range v.CartIndexs {
-			cartindexs = append(cartindexs, v1)
+			cartindexmap[v1] = true
 		}
 	}
 
-	conn.Send("MULTI")
-	for _, v := range cartindexs {
-		conn.Send("ZRANGE", rconst.ZSetCartInfoPrefix+playerid, v, v)
+	for k := range cartindexmap {
+		cartindexs = append(cartindexs, k)
 	}
-	redisMDArray, err = redis.Values(conn.Do("EXEC"))
-	if err != nil {
-		httpRsp.Result = proto.Int32(int32(gconst.ErrRedis))
-		httpRsp.Msg = proto.String("统一获取缓存操作失败")
-		log.Errorf("code:%d msg:%s redisMDArray Values err, err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
-		return
-	}
-
-	cartbyte, _ := redis.ByteSlices(redisMDArray[0], nil)
 
 	cartmap := map[int32]*rconst.Cart{}
+	goodidmap := map[string]bool{}
 	goodids := []string{}
-	for i, v := range cartbyte {
+	for _, v := range cartindexs {
+		cartbyte, _ := redis.Bytes(cartbytes[v], nil)
+
 		tmp := &rconst.Cart{}
-		err := json.Unmarshal([]byte(v), tmp)
+		err := json.Unmarshal(cartbyte, tmp)
 		if err != nil {
 			httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
 			httpRsp.Msg = proto.String("购物车商品unmarshal解析失败")
@@ -96,8 +102,12 @@ func orderListHandle(c *server.StupidContext) {
 			return
 		}
 
-		cartmap[int32(i)] = tmp
-		goodids = append(goodids, tmp.GoodID)
+		cartmap[v] = tmp
+		goodidmap[tmp.GoodID] = true
+	}
+
+	for k := range goodidmap {
+		goodids = append(goodids, k)
 	}
 
 	conn.Send("MULTI")
@@ -113,9 +123,11 @@ func orderListHandle(c *server.StupidContext) {
 	}
 
 	goodmap := map[string]*rconst.Good{}
-	for _, v := range goodids {
+	for i, v := range goodids {
+		goodbyte, _ := redis.Bytes(redisMDArray[i], nil)
+
 		tmp := &rconst.Good{}
-		err := json.Unmarshal([]byte(v), tmp)
+		err := json.Unmarshal(goodbyte, tmp)
 		if err != nil {
 			httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
 			httpRsp.Msg = proto.String("商品unmarshal解析失败")
@@ -126,17 +138,27 @@ func orderListHandle(c *server.StupidContext) {
 		goodmap[v] = tmp
 	}
 
-	orderlist := []*order{}
+	orderlist := []*listorder{}
 	for _, v := range orders {
-		tmpgoodlist := []*rconst.Good{}
+		tmpgoodlist := []*listordergood{}
+		price := freightprice
 		for _, v1 := range v.CartIndexs {
-			tmpgoodlist = append(tmpgoodlist, goodmap[cartmap[v1].GoodID])
+			tmpordergood := &listordergood{
+				GoodID: goodmap[cartmap[v1].GoodID].GoodID,
+				URL:    goodmap[cartmap[v1].GoodID].URL,
+				Name:   goodmap[cartmap[v1].GoodID].Name,
+				Num:    cartmap[v1].Num,
+			}
+			tmpgoodlist = append(tmpgoodlist, tmpordergood)
+
+			price += goodmap[cartmap[v1].GoodID].Price * int64(tmpordergood.Num)
 		}
 
-		tmp := &order{
+		tmp := &listorder{
 			OrderID:  v.OrderID,
 			Status:   v.Status,
 			GoodList: tmpgoodlist,
+			Price:    price,
 		}
 
 		orderlist = append(orderlist, tmp)

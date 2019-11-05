@@ -19,3 +19,18 @@ func (a sortaddressid) Less(i, j int) bool {
 func (a sortaddressid) Swap(i, j int) {
 	a[i], a[j] = a[j], a[i]
 }
+
+func statusToString(status int32) string {
+	switch status {
+	case rconst.TypeOrderStatusNotCharged:
+		return "未付款"
+	case rconst.TypeOrderStatusCharged:
+		return "已付款"
+	case rconst.TypeOrderStatusSend:
+		return "已发货"
+	case rconst.TypeOrderStatusFinished:
+		return "已完成"
+	}
+
+	return "未知状态"
+}

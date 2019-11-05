@@ -27,6 +27,7 @@ type ShopOrder struct {
 	AddressID  string  `json:"addressid"`
 	CartIndexs []int32 `json:"cartindexs"`
 	Status     int32   `json:"status"`
+	Time       int64   `json:"time"`
 }
 
 const (
