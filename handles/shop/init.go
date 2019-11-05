@@ -11,4 +11,6 @@ func init() {
 	server.RegisterGetHandleNoUserID("/shop/order/list", orderListHandle)
 	server.RegisterPostHandleNoUserID("/shop/order/detail", orderDetailHandle)
 	server.RegisterPostHandleNoUserID("/shop/order/cancel", orderCancelHandle)
+	server.RegisterPostHandleNoUserID("/shop/collect/add", collectAddHandle)
+	server.RegisterPostHandleNoUserID("/shop/collect/delete", collectDeleteHandle)
 }

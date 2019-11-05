@@ -47,4 +47,7 @@ const (
 
 	// HashShopOrderPrefix 订单地址+playerid
 	HashShopOrderPrefix = "weshop:shop:order:"
+
+	// SetShopCollectPrefix 收藏+playerid
+	SetShopCollectPrefix = "weshop:shop:collect:"
 )
