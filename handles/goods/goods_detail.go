@@ -21,6 +21,7 @@ type detailRsp struct {
 	Issue         []*rconst.GoodIssue         `json:"issue"`
 	Brand         *rconst.GoodBrand           `json:"brand"`
 	Specification []*rconst.GoodSpecification `json:"specification"`
+	Collect       int32                       `json:"collect"`
 }
 
 func detailHandle(c *server.StupidContext) {
@@ -42,7 +43,7 @@ func detailHandle(c *server.StupidContext) {
 	log.Info("detailHandle enter, req:", string(c.Body))
 
 	conn := c.RedisConn
-	// playerid := c.UserID
+	playerid := c.UserID
 
 	// redis multi get
 	conn.Send("MULTI")
@@ -51,6 +52,7 @@ func detailHandle(c *server.StupidContext) {
 	conn.Send("HGET", rconst.HashGoodsIssue, req.GoodID)
 	conn.Send("HGET", rconst.HashGoodsBrand, req.GoodID)
 	conn.Send("HGET", rconst.HashGoodsSpecification, req.GoodID)
+	conn.Send("SISMEMBER", rconst.SetShopCollectPrefix+playerid, req.GoodID)
 	redisMDArray, err := redis.Values(conn.Do("EXEC"))
 	if err != nil {
 		httpRsp.Result = proto.Int32(int32(gconst.ErrRedis))
@@ -64,6 +66,7 @@ func detailHandle(c *server.StupidContext) {
 	issuebyte, _ := redis.Bytes(redisMDArray[2], nil)
 	brandbyte, _ := redis.Bytes(redisMDArray[3], nil)
 	specificationbyte, _ := redis.Bytes(redisMDArray[4], nil)
+	iscollect, _ := redis.Bool(redisMDArray[5], nil)
 
 	// // do something
 	gallery := []string{}
@@ -121,6 +124,11 @@ func detailHandle(c *server.StupidContext) {
 		}
 	}
 
+	collect := int32(0)
+	if iscollect {
+		collect = int32(1)
+	}
+
 	// rsp
 	rsp := &detailRsp{
 		Gallery:       gallery,
@@ -128,6 +136,7 @@ func detailHandle(c *server.StupidContext) {
 		Issue:         issue,
 		Brand:         brand,
 		Specification: specification,
+		Collect:       collect,
 	}
 	data, err := json.Marshal(rsp)
 	if err != nil {
