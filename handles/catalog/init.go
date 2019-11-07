@@ -4,6 +4,6 @@ import "weshop/server"
 
 func init() {
 	// todo test
-	server.RegisterGetHandleNoUserID("/catalog/index", indexHandle)
-	server.RegisterPostHandleNoUserID("/catalog/current", currentHandle)
+	server.RegisterGetHandle("/catalog/index", indexHandle)
+	server.RegisterPostHandle("/catalog/current", currentHandle)
 }

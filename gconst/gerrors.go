@@ -34,6 +34,14 @@ const (
 	// ErrCreateUUID 生成uuid失败
 	ErrCreateUUID = Error(12)
 
+	/* auth 100-199 */
+	// ErrAuthGetWexinUserInfo 获取微信用户信息失败
+	ErrAuthGetWexinUserInfo = Error(100)
+	// ErrAuthGetWeixinPlusInfo 获取微信额外信息失败
+	ErrAuthGetWeixinPlusInfo = Error(101)
+	// ErrAuthNotFindOpenID 没找到用户Openid
+	ErrAuthNotFindOpenID = Error(102)
+
 	/* shop 1000-1099 */
 	// ErrShopNotFindAddress 未找到收货地址
 	ErrShopNotFindAddress = Error(1000)

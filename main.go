@@ -20,6 +20,7 @@ import (
 
 	_ "net/http/pprof"
 
+	_ "weshop/handles/auth"
 	_ "weshop/handles/catalog"
 	_ "weshop/handles/cart"
 	_ "weshop/handles/goods"

@@ -9,14 +9,14 @@
     "redis_server": "47.106.147.185:6379",
     // mysql服务器信息
     "db": {
-        "dbName": "db",
-        "dbIP": "127.0.0.1:3306",
+        "dbName": "weshop",
+        "dbIP": "47.106.147.185:3306",
         "dbUser": "root",
         "dbPassword": "123456"
     },
     "db_log": {
-        "dbName": "log",
-        "dbIP": "127.0.0.1:3306",
+        "dbName": "weshoplog",
+        "dbIP": "47.106.147.185:3306",
         "dbUser": "root",
         "dbPassword": "123456"
     },

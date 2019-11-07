@@ -32,12 +32,12 @@ var (
 	DbIP        = "127.0.0.1:3306"
 	DbUser      = "user"
 	DbPassword  = "123456"
-	DbName      = "goddess"
+	DbName      = ""
 
 	LogDbIP       = "127.0.0.1:3306"
 	LogDbUser     = "user"
 	LogDbPassword = "123456"
-	LogDbName     = "goddess"
+	LogDbName     = ""
 
 	MQIP       = ":5672"
 	MQAccount  = "guest"
@@ -80,7 +80,7 @@ func ParseConfigFile(filepath string) bool {
 		RedisServer       string       `json:"redis_server"`
 		ServreID          int          `json:"guid"`
 		URL               string       `json:"url"`
-		DbGoddess         DbServerInfo `json:"db_goddess"`
+		Db                DbServerInfo `json:"db"`
 		Dblog             DbServerInfo `json:"db_log"`
 		MQIP              string       `json:"mqIP"`
 		MQAccount         string       `json:"mqAccount"`
@@ -152,10 +152,10 @@ func ParseConfigFile(filepath string) bool {
 		MQPassword = params.MQPassword
 	}
 
-	DbIP = params.DbGoddess.DbIP
-	DbUser = params.DbGoddess.DbUser
-	DbPassword = params.DbGoddess.DbPassword
-	DbName = params.DbGoddess.DbName
+	DbIP = params.Db.DbIP
+	DbUser = params.Db.DbUser
+	DbPassword = params.Db.DbPassword
+	DbName = params.Db.DbName
 
 	LogDbIP = params.Dblog.DbIP
 	LogDbUser = params.Dblog.DbUser

@@ -39,7 +39,7 @@ func CreateHTTPServer() {
 	rootRouter.Handle("GET", rootPath+"/version", echoVersion)
 
 	redisStartup()
-	// mysqlStartup()
+	mysqlStartup()
 	// mqStartup()
 
 	go acceptHTTPRequest()

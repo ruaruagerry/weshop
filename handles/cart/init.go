@@ -4,11 +4,11 @@ import "weshop/server"
 
 func init() {
 	// todo test
-	server.RegisterGetHandleNoUserID("/cart/index", indexHandle)
-	server.RegisterPostHandleNoUserID("/cart/add", addHandle)
-	server.RegisterGetHandleNoUserID("/cart/count", countHandle)
-	server.RegisterPostHandleNoUserID("/cart/checked", checkedHandle)
-	server.RegisterPostHandleNoUserID("/cart/checkedall", checkedallHandle)
-	server.RegisterPostHandleNoUserID("/cart/update", updateHandle)
-	server.RegisterPostHandleNoUserID("/cart/delete", deleteHandle)
+	server.RegisterGetHandle("/cart/index", indexHandle)
+	server.RegisterPostHandle("/cart/add", addHandle)
+	server.RegisterGetHandle("/cart/count", countHandle)
+	server.RegisterPostHandle("/cart/checked", checkedHandle)
+	server.RegisterPostHandle("/cart/checkedall", checkedallHandle)
+	server.RegisterPostHandle("/cart/update", updateHandle)
+	server.RegisterPostHandle("/cart/delete", deleteHandle)
 }
