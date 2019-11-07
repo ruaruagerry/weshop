@@ -128,7 +128,7 @@ func replyClientWithTokenError(w http.ResponseWriter, errCode int) {
 	httpRsp.Result = &result
 
 	// 退出函数时发送回复给客户端
-	bytes, err := proto.Marshal(&httpRsp)
+	bytes, err := json.Marshal(&httpRsp)
 	if err != nil {
 		log.Panic("WriteRsp panic:", err)
 	}

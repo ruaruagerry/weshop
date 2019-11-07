@@ -45,7 +45,6 @@ func orderListHandle(c *server.StupidContext) {
 	// redis multi get
 	conn.Send("MULTI")
 	conn.Send("HGETALL", rconst.HashShopOrderPrefix+playerid)
-	conn.Send("ZRANGE", rconst.ZSetCartInfoPrefix+playerid, 0, -1)
 	conn.Send("HGET", rconst.HashShopCheckoutConfig, rconst.FieldShopFreightPrice)
 	redisMDArray, err := redis.Values(conn.Do("EXEC"))
 	if err != nil {
@@ -56,8 +55,7 @@ func orderListHandle(c *server.StupidContext) {
 	}
 
 	ordermap, _ := redis.StringMap(redisMDArray[0], nil)
-	cartbytes, _ := redis.ByteSlices(redisMDArray[1], nil)
-	freightprice, _ := redis.Int64(redisMDArray[2], nil)
+	freightprice, _ := redis.Int64(redisMDArray[1], nil)
 
 	// do something
 	orders := []*rconst.ShopOrder{}
@@ -75,35 +73,12 @@ func orderListHandle(c *server.StupidContext) {
 	}
 
 	// find cart
-	cartindexs := []int32{}
-	cartindexmap := map[int32]bool{}
-	for _, v := range orders {
-		for _, v1 := range v.CartIndexs {
-			cartindexmap[v1] = true
-		}
-	}
-
-	for k := range cartindexmap {
-		cartindexs = append(cartindexs, k)
-	}
-
-	cartmap := map[int32]*rconst.Cart{}
 	goodidmap := map[string]bool{}
 	goodids := []string{}
-	for _, v := range cartindexs {
-		cartbyte, _ := redis.Bytes(cartbytes[v], nil)
-
-		tmp := &rconst.Cart{}
-		err := json.Unmarshal(cartbyte, tmp)
-		if err != nil {
-			httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
-			httpRsp.Msg = proto.String("购物车商品unmarshal解析失败")
-			log.Errorf("code:%d msg:%s cart unmarshal err, err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
-			return
+	for _, v := range orders {
+		for _, v1 := range v.Carts {
+			goodidmap[v1.GoodID] = true
 		}
-
-		cartmap[v] = tmp
-		goodidmap[tmp.GoodID] = true
 	}
 
 	for k := range goodidmap {
@@ -142,16 +117,16 @@ func orderListHandle(c *server.StupidContext) {
 	for _, v := range orders {
 		tmpgoodlist := []*listordergood{}
 		price := freightprice
-		for _, v1 := range v.CartIndexs {
+		for _, v1 := range v.Carts {
 			tmpordergood := &listordergood{
-				GoodID: goodmap[cartmap[v1].GoodID].GoodID,
-				URL:    goodmap[cartmap[v1].GoodID].URL,
-				Name:   goodmap[cartmap[v1].GoodID].Name,
-				Num:    cartmap[v1].Num,
+				GoodID: goodmap[v1.GoodID].GoodID,
+				URL:    goodmap[v1.GoodID].URL,
+				Name:   goodmap[v1.GoodID].Name,
+				Num:    v1.Num,
 			}
 			tmpgoodlist = append(tmpgoodlist, tmpordergood)
 
-			price += goodmap[cartmap[v1].GoodID].Price * int64(tmpordergood.Num)
+			price += goodmap[v1.GoodID].Price * int64(tmpordergood.Num)
 		}
 
 		tmp := &listorder{

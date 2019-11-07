@@ -71,7 +71,6 @@ func orderDetailHandle(c *server.StupidContext) {
 	// redis multi get
 	conn.Send("MULTI")
 	conn.Send("HGET", rconst.HashShopOrderPrefix+playerid, req.OrderID)
-	conn.Send("ZRANGE", rconst.ZSetCartInfoPrefix+playerid, 0, -1)
 	conn.Send("HGET", rconst.HashShopCheckoutConfig, rconst.FieldShopFreightPrice)
 	redisMDArray, err := redis.Values(conn.Do("EXEC"))
 	if err != nil {
@@ -82,8 +81,7 @@ func orderDetailHandle(c *server.StupidContext) {
 	}
 
 	orderbyte, _ := redis.Bytes(redisMDArray[0], nil)
-	cartbytes, _ := redis.ByteSlices(redisMDArray[1], nil)
-	freightprice, _ := redis.Int64(redisMDArray[2], nil)
+	freightprice, _ := redis.Int64(redisMDArray[1], nil)
 
 	// do something
 	shoporder := &rconst.ShopOrder{}
@@ -99,26 +97,15 @@ func orderDetailHandle(c *server.StupidContext) {
 	goodids := []string{}
 	goodnummap := map[string]int32{}
 	goodspecificationmap := map[string]string{}
-	for _, v := range shoporder.CartIndexs {
-		cartbyte, _ := redis.Bytes(cartbytes[v], nil)
-
-		tmp := &rconst.Cart{}
-		err := json.Unmarshal(cartbyte, tmp)
-		if err != nil {
-			httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
-			httpRsp.Msg = proto.String("购物车商品unmarshal解析失败")
-			log.Errorf("code:%d msg:%s cart unmarshal err, err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
-			return
-		}
-
+	for _, v := range shoporder.Carts {
 		specslice := []string{}
-		for _, v1 := range tmp.Specification {
+		for _, v1 := range v.Specification {
 			specslice = append(specslice, v1.Value)
 		}
 
-		goodidmap[tmp.GoodID] = true
-		goodnummap[tmp.GoodID] += tmp.Num
-		goodspecificationmap[tmp.GoodID] = strings.Join(specslice, ";")
+		goodidmap[v.GoodID] = true
+		goodnummap[v.GoodID] += v.Num
+		goodspecificationmap[v.GoodID] = strings.Join(specslice, ";")
 	}
 
 	for k := range goodidmap {

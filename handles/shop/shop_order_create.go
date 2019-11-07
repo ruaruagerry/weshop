@@ -71,8 +71,8 @@ func orderCreateHandle(c *server.StupidContext) {
 		return
 	}
 
-	cartindexs := []int32{}
-	for i, v := range cartbytes {
+	carts := []*rconst.Cart{}
+	for _, v := range cartbytes {
 		tmp := &rconst.Cart{}
 		err := json.Unmarshal(v, tmp)
 		if err != nil {
@@ -83,7 +83,7 @@ func orderCreateHandle(c *server.StupidContext) {
 		}
 
 		if tmp.Checked {
-			cartindexs = append(cartindexs, int32(i))
+			carts = append(carts, tmp)
 		}
 	}
 
@@ -96,15 +96,25 @@ func orderCreateHandle(c *server.StupidContext) {
 	}
 
 	shoporder := &rconst.ShopOrder{
-		OrderID:    uuidorderid.String(),
-		AddressID:  req.AddressID,
-		CartIndexs: cartindexs,
-		Status:     rconst.TypeOrderStatusNotCharged,
-		Time:       time.Now().Unix(),
+		OrderID:   uuidorderid.String(),
+		AddressID: req.AddressID,
+		Carts:     carts,
+		Status:    rconst.TypeOrderStatusNotCharged,
+		Time:      time.Now().Unix(),
 	}
 
 	// redis multi set
 	conn.Send("MULTI")
+	for _, v := range carts {
+		cartbyte, err := json.Marshal(v)
+		if err != nil {
+			httpRsp.Result = proto.Int32(int32(gconst.ErrParse))
+			httpRsp.Msg = proto.String("订单marshal解析失败")
+			log.Errorf("code:%d msg:%s order json marshal err:%s", httpRsp.GetResult(), httpRsp.GetMsg(), err.Error())
+			return
+		}
+		conn.Send("ZREM", rconst.ZSetCartInfoPrefix+playerid, cartbyte)
+	}
 	shoporderbyte, err := json.Marshal(shoporder)
 	if err != nil {
 		httpRsp.Result = proto.Int32(int32(gconst.ErrParse))

@@ -23,11 +23,11 @@ type ShopAddress struct {
 
 // ShopOrder 订单信息
 type ShopOrder struct {
-	OrderID    string  `json:"orderid"`
-	AddressID  string  `json:"addressid"`
-	CartIndexs []int32 `json:"cartindexs"`
-	Status     int32   `json:"status"`
-	Time       int64   `json:"time"`
+	OrderID   string  `json:"orderid"`
+	AddressID string  `json:"addressid"`
+	Carts     []*Cart `json:"carts"`
+	Status    int32   `json:"status"`
+	Time      int64   `json:"time"`
 }
 
 const (
