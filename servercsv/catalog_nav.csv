@@ -1,0 +1,6 @@
+﻿ID,大类分组ID,名称,浮框图片,,,,,,,,,,,,,
+"all,optional,string","all,required,int","all,optional,string","all,optional,string",,,,,,,,,,,,,
+cfgId,id,name,bannerurl,,,,,,,,,,,,,
+,1,护肤,"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3455920086,1735426098&fm=26&gp=0.jpg",,,,,,,,,,,,,
+,2,婴儿,https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572021704896&di=16dfe89486381da3aea2146670d96bc5&imgtype=0&src=http%3A%2F%2Fphotocdn.sohu.com%2F20170802%2FImg505075886.jpg,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,

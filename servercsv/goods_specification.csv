@@ -1,0 +1,7 @@
+﻿规格ID,规格名称,规格详情id1,规格详情id2,规格详情id3,规格详情id4,规格详情id5,规格详情id6,规格详情值1,规格详情值2,规格详情值3,规格详情值4,规格详情值5,规格详情值6
+"all,required,string","all,optional,string","all,optional,string","all,optional,string","all,optional,string","all,optional,string","all,optional,string","all,optional,string","all,optional,string","all,optional,string","all,optional,string","all,optional,string","all,optional,string","all,optional,string"
+cfgId,name,arr_detailid_1,arr_detailid_2,arr_detailid_3,arr_detailid_4,arr_detailid_5,arr_detailid_6,arr_detailvalue_1,arr_detailvalue_2,arr_detailvalue_3,arr_detailvalue_4,arr_detailvalue_5,arr_detailvalue_6
+hf1_1_s_1,兰蔻规格1,hf1_1_s_1_d_1,hf1_1_s_1_d_2,,,,,兰蔻规格1value1,兰蔻规格1value2,,,,
+hf1_1_s_2,兰蔻规格2,hf1_1_s_2_d_1,hf1_1_s_2_d_2,,,,,兰蔻规格2value1,兰蔻规格2value2,,,,
+hf1_2_s_1,SKII规格1,hf1_2_s_1_d_1,hf1_2_s_1_d_2,,,,,SKII规格1value1,SKII规格1value2,,,,
+hf1_2_s_1,SKII规格2,hf1_2_s_2_d_1,hf1_2_s_2_d_2,,,,,SKII规格2value1,SKII规格2value2,,,,

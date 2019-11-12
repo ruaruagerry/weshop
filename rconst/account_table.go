@@ -2,7 +2,7 @@ package rconst
 
 const (
 	// HashAccountPrefix account hash table
-	HashAccountPrefix = "gd:acc:"
+	HashAccountPrefix = "weshop:acc:"
 	// FieldAccUserID user id
 	FieldAccUserID = "id"
 	// FieldAccName account name
@@ -19,4 +19,7 @@ const (
 	FiledAccCreateTime = "createtime"
 	// FiledAccLoginTime 最后登录时间
 	FiledAccLoginTime = "logintime"
+
+	// SetUsers 登录过的用户
+	SetUsers = "weshop:users"
 )

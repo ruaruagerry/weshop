@@ -127,13 +127,14 @@ func loginHandle(c *server.StupidContext) {
 
 	// redis multi set
 	conn.Send("MULTI")
-	conn.Send("HMSET", rconst.HashAccountPrefix,
+	conn.Send("HMSET", rconst.HashAccountPrefix+playerid,
 		rconst.FieldAccUserID, row.ID,
 		rconst.FieldAccName, row.Nick,
 		rconst.FieldAccImage, row.Portrait,
 		rconst.FieldAccGender, row.Gender,
 		rconst.FieldAccOpenID, row.OpenID,
 		rconst.FieldAccUnionID, row.UnionID)
+	conn.Send("SADD", rconst.SetUsers, playerid)
 	_, err = conn.Do("EXEC")
 	if err != nil {
 		httpRsp.Result = proto.Int32(int32(gconst.ErrRedis))

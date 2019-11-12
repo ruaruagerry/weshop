@@ -1,0 +1,4 @@
+﻿ID,运费,微信支付码,支付宝支付码,,,,,,,,,,,,,
+"all,required,string","all,required,int","all,required,string","all,required,string",,,,,,,,,,,,,
+cfgId,freightprice,wxpayurl,zfbpayurl,,,,,,,,,,,,,
+,1,https://www.gerryluo.com/wx.JPG,https://www.gerryluo.com/zfb.JPG,,,,,,,,,,,,,

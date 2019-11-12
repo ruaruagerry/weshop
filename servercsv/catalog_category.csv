@@ -1,0 +1,6 @@
+﻿ID,大类分组ID,小类分组ID,描述,名称,图片,,,,,,,,,,,
+"all,optional,string","all,required,int","all,optional,string","all,optional,string","all,optional,string","all,optional,string",,,,,,,,,,,
+cfgId,id,categoryid,describe,name,url,,,,,,,,,,,
+,1,hf1,我的护肤品1,护肤1,https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572021724995&di=9a057750fd523d002846e2f687fb6055&imgtype=0&src=http%3A%2F%2Fimage5.buy.ccb.com%2Fmerchant%2F201412%2F136639611%2F1500350888969_4.jpg,,,,,,,,,,,
+,1,hf2,我的护肤品2,护肤2,https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572021724994&di=0f242474ed4be196d7884473751e951a&imgtype=0&src=http%3A%2F%2Fphotocdn.sohu.com%2F20120205%2FImg333759445.jpg,,,,,,,,,,,
+,2,ye1,我的婴儿1,婴儿1,https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1572021724994&di=0f242474ed4be196d7884473751e951a&imgtype=0&src=http%3A%2F%2Fphotocdn.sohu.com%2F20120205%2FImg333759445.jpg,,,,,,,,,,,
