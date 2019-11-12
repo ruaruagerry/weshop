@@ -21,8 +21,8 @@ import (
 	_ "net/http/pprof"
 
 	_ "weshop/handles/auth"
-	_ "weshop/handles/catalog"
 	_ "weshop/handles/cart"
+	_ "weshop/handles/catalog"
 	_ "weshop/handles/goods"
 	_ "weshop/handles/shop"
 	_ "weshop/handles/tool"
@@ -84,9 +84,6 @@ func main() {
 
 	// server startTime
 	servercfg.StartTime = int(time.Now().Unix())
-
-	// load game config
-	gamecfg.LoadAll(servercfg.GameCfgsDir)
 
 	log.Println("try to start  stupid server...")
 

@@ -8,6 +8,7 @@ import (
 	"weshop/pb"
 	"weshop/rconst"
 	"weshop/server"
+	"weshop/servercfg"
 
 	"github.com/golang/protobuf/proto"
 	"github.com/gomodule/redigo/redis"
@@ -37,6 +38,9 @@ func writeconfigHandle(c *server.StupidContext) {
 		log.Errorf("code:%d msg:%s secert err, secert:%s reqsecert:%s", httpRsp.GetResult(), httpRsp.GetMsg(), secert, reqsecert)
 		return
 	}
+
+	// load game config
+	gamecfg.LoadAll(servercfg.GameCfgsDir)
 
 	// redis multi get
 	conn.Send("MULTI")
